@@ -18,7 +18,9 @@ import { KucoinWebsocket } from './kucoin-websocket';
                     } else if (channel2 === 'to:ws:unsubscribe') {
                         kucoinWebsocket.unsubscribe(JSON.parse(message2));
                     } else if (channel2 === 'to:ws') {
-                        kucoinWebsocket.close();
+                        if (message2 === 'close') {
+                            kucoinWebsocket.close();
+                        }
                     }
                 });
             });

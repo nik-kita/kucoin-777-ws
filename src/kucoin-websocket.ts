@@ -1,4 +1,5 @@
 import { KucoinRequest } from '@nik-kita/kucoin-777-api';
+import { WsChannelEnum } from '@nik-kita/kucoin-777-pub-sub-types';
 import {
     WsPubTypeEnum, WsSubjectEnum, WsSubscriptionTypeEnum, WsTopicEnum,
 } from '@nik-kita/kucoin-777-ws-types';
@@ -32,7 +33,8 @@ export class KucoinWebsocket {
 
                 if (message.type !== 'message') return;
 
-                pub.publish(`ws:${(message as Required<TMessage>).topic}`, data);
+                pub.publish(`${WsChannelEnum.WS_TOPIC}${(message as Required<TMessage>).topic}`, data);
+                pub.publish(`${WsChannelEnum.WS_SUBJECT}${(message as Required<TMessage>).subject}`, data);
             }).on('open', () => {
                 const stopPingPong = setInterval(() => {
                     ws.send(`{ "id": "${id}", "type": "ping" }`);
@@ -40,7 +42,7 @@ export class KucoinWebsocket {
 
                 ws.on('close', () => {
                     clearInterval(stopPingPong);
-                    pub.publish('ws:main', 'close');
+                    pub.publish(WsChannelEnum.WS_MAIN, 'close');
                 });
             });
 

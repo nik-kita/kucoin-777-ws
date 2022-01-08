@@ -1,14 +1,16 @@
 import { KucoinRequest } from '@nik-kita/kucoin-777-api';
-import { WsSubjectEnum, WsSubscriptionTypeEnum } from '@nik-kita/kucoin-777-ws-types';
+import {
+    WsPubTypeEnum, WsSubjectEnum, WsSubscriptionTypeEnum, WsTopicEnum,
+} from '@nik-kita/kucoin-777-ws-types';
 import { Redis as TRedis } from 'ioredis';
 import { v4 } from 'uuid';
 import Ws from 'ws';
 import { WsSubscriber } from './subscriber';
 
 type TMessage = {
-  type: string,
-  subject?: string,
-  topic?: string,
+  type: WsPubTypeEnum,
+  subject?: WsSubjectEnum,
+  topic?: WsTopicEnum,
 }
 
 export class KucoinWebsocket {
@@ -30,7 +32,7 @@ export class KucoinWebsocket {
 
                 if (message.type !== 'message') return;
 
-                pub.publish(`ws:message:${(message as Required<TMessage>).subject}`, data);
+                pub.publish(`ws:${(message as Required<TMessage>).topic}`, data);
             }).on('open', () => {
                 const stopPingPong = setInterval(() => {
                     ws.send(`{ "id": "${id}", "type": "ping" }`);

@@ -10,40 +10,40 @@ export class WsSubscriber {
         const { id, ws } = this;
 
         return {
-            'account.balance': function () {
+            'account.balance': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'debt.ratio': function () {
+            'debt.ratio': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'funding.update': function () {
+            'funding.update': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'order.done': function () {
+            'order.done': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'order.open': function () {
+            'order.open': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'order.update': function () {
+            'order.update': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'position.status': function () {
+            'position.status': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'trade.candles.update': function () {
+            'trade.candles.update': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'trade.l2update': function () {
+            'trade.l2update': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'trade.l3match': function () {
+            'trade.l3match': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'trade.snapshot': function () {
+            'trade.snapshot': () => {
                 throw new Error('===ERROR=not=implemented=yet===');
             },
-            'trade.ticker': function (coins?: string[]) {
+            'trade.ticker': (coins?: string[]) => {
                 const pubPayload: TWsMarketTickerSub = {
                     id,
                     type: subscribeType,

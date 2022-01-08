@@ -57,4 +57,8 @@ export class KucoinWebsocket {
     public unsubscribe(subject: WsSubjectEnum) {
         return this.subscriber.subscribe(WsSubscriptionTypeEnum.UNSUBSCRIBE)[subject];
     }
+
+    public close() {
+        this.subscriber.ws.close();
+    }
 }

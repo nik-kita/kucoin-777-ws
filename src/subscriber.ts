@@ -4,7 +4,7 @@ import {
 } from '@nik-kita/kucoin-777-ws-types';
 
 export class WsSubscriber {
-    constructor(private id: string, private ws: TWs) { }
+    constructor(private id: string, public ws: TWs) { }
 
     subscribe(subscribeType: WsSubscriptionTypeEnum): Record<WsSubjectEnum, (...args: any[]) => unknown> {
         const { id, ws } = this;

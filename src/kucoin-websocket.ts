@@ -1,7 +1,9 @@
 import { KucoinRequest } from '@nik-kita/kucoin-777-api';
+import { WsSubjectEnum, WsSubscriptionTypeEnum } from '@nik-kita/kucoin-777-ws-types';
 import { Redis as TRedis } from 'ioredis';
 import { v4 } from 'uuid';
-import Ws, { WebSocket as TWs } from 'ws';
+import Ws from 'ws';
+import { WsSubscriber } from './subscriber';
 
 type TMessage = {
   type: string,
@@ -12,12 +14,10 @@ type TMessage = {
 export class KucoinWebsocket {
     private constructor(
     public pub: TRedis,
-    public sub: TRedis,
-    private ws: TWs,
-    private id: string,
+    private subscriber: WsSubscriber,
     ) { }
 
-    public static async open(pub: TRedis, sub: TRedis) {
+    public static async open(pub: TRedis) {
         const res = await KucoinRequest
             .POST['/api/v1/bullet-private']
             .exec();
@@ -42,6 +42,14 @@ export class KucoinWebsocket {
                 });
             });
 
-        return new KucoinWebsocket(pub, sub, ws, id);
+        return new KucoinWebsocket(pub, new WsSubscriber(id, ws));
+    }
+
+    public subscribe(subject: WsSubjectEnum) {
+        return this.subscriber.subscribe(WsSubscriptionTypeEnum.SUBSCRIBE)[subject];
+    }
+
+    public unsubscribe(subject: WsSubjectEnum) {
+        return this.subscriber.subscribe(WsSubscriptionTypeEnum.UNSUBSCRIBE)[subject];
     }
 }

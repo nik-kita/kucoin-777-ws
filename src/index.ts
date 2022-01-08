@@ -1,6 +1,8 @@
 import Redis from 'ioredis';
+import dotenv from 'dotenv';
 import { KucoinWebsocket } from './kucoin-websocket';
 
+dotenv.config();
 (async () => {
     const pub = new Redis({ db: 7 });
     const sub = pub.duplicate();
@@ -14,7 +16,8 @@ import { KucoinWebsocket } from './kucoin-websocket';
             .then((kucoinWebsocket) => {
                 sub.on('message', (channel2, message2) => {
                     if (channel2 === 'to:ws:subscribe') {
-                        kucoinWebsocket.subscribe(JSON.parse(message2));
+                        const { subject, data } = JSON.parse(message2);
+                        kucoinWebsocket.subscribe(subject)(data);
                     } else if (channel2 === 'to:ws:unsubscribe') {
                         kucoinWebsocket.unsubscribe(JSON.parse(message2));
                     } else if (channel2 === 'to:ws') {

@@ -1,5 +1,6 @@
 import Redis from 'ioredis';
 import dotenv from 'dotenv';
+import TPubSub, { PubSubClient, PubSubFromServer, PubSubFromWs, } from '@nik-kita/kucoin-777-pub-sub-types';
 import { KucoinWebsocket } from './kucoin-websocket';
 
 dotenv.config();
@@ -7,7 +8,7 @@ dotenv.config();
     const pub = new Redis({ db: 7 });
     const sub = pub.duplicate();
 
-    await sub.subscribe('to:ws', 'to:ws:subscribe', 'to:ws:unsubscribe');
+    await sub.subscribe('to:ws:subscribe', 'to:ws:unsubscribe');
 
     sub.on('message', (channel, message) => {
         if (channel !== 'to:ws' && message !== 'open') return;
